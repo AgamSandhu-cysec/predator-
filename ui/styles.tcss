@@ -1,0 +1,276 @@
+Screen {
+    background: black;
+    color: #FF0000;
+}
+
+Header {
+    background: black;
+    color: #FF0000;
+    text-style: bold;
+    border-bottom: solid #FF0000;
+}
+
+Footer {
+    background: black;
+    color: #FF0000;
+}
+
+TabbedContent {
+    background: black;
+}
+
+Tabs {
+    background: black;
+    border-bottom: solid #FF0000;
+}
+
+Tab {
+    color: #FF0000;
+}
+
+Tab.-active {
+    color: black;
+    background: #FF0000;
+    text-style: bold;
+}
+
+Pane {
+    background: black;
+    border: solid #FF0000;
+    padding: 1;
+}
+
+Input {
+    background: black;
+    color: white;
+    border: solid #FF0000;
+}
+
+Input:focus {
+    border: double #FF0000;
+}
+
+Select {
+    background: black;
+    color: white;
+    border: solid #FF0000;
+}
+
+Select:focus {
+    border: double #FF0000;
+}
+
+Button {
+    background: black;
+    color: #FF0000;
+    border: solid #FF0000;
+    text-style: bold;
+}
+
+Button:hover {
+    background: #550000;
+}
+
+Button:focus {
+    border: double #FF0000;
+}
+
+DataTable {
+    background: black;
+    color: white;
+    border: solid #FF0000;
+}
+
+DataTable > .datatable--header {
+    background: black;
+    color: #FF0000;
+    text-style: bold;
+}
+
+Log {
+    background: black;
+    color: white;
+    border: solid #FF0000;
+}
+
+#important-finding {
+    color: #00FF00;
+    text-style: bold;
+}
+
+#low-confidence {
+    color: #FF0000;
+}
+
+#med-confidence {
+    color: yellow;
+}
+
+#high-confidence {
+    color: #00FF00;
+}
+
+.header_row {
+    height: 3;
+    align: left middle;
+    padding: 0;
+}
+
+.header_row .title {
+    width: 1fr;
+    content-align: left middle;
+    padding-top: 1;
+}
+
+#pause_resume_btn, #start_peas_btn {
+    width: auto;
+    min-width: 16;
+}
+
+/* ─── AI Exploiter Tab ──────────────────────────────── */
+
+#aix_outer {
+    height: 100%;
+}
+
+#aix_header {
+    height: 1;
+    background: #330000;
+    color: #FF0000;
+    text-style: bold;
+    content-align: center middle;
+    padding: 0 2;
+}
+
+/* Config panel wrapper */
+#aix_config {
+    height: auto;
+    background: #0f0000;
+    border: solid #3d0000;
+    padding: 1 1 0 1;
+}
+
+/* ── Row containers ── */
+.aix_row1 {
+    height: auto;           /* shrink-wrap to tallest cell */
+    margin-bottom: 1;
+}
+
+.aix_row2 {
+    height: auto;
+    margin-bottom: 0;
+}
+
+/* ── Individual cells (Vertical containers) ── */
+.aix_cell {
+    height: auto;
+    padding: 0 1;
+}
+
+/* Field labels — compact red */
+.aix_lbl {
+    height: 1;
+    color: #FF0000;
+    text-style: bold;
+    padding: 0;
+}
+
+/* ── Row-1 cell widths: Provider | Model | Auto-execute ── */
+#aix_cell_provider { width: 30%; }
+#aix_cell_model    { width: 30%; }
+#aix_cell_auto     { width: 40%; align: left bottom; }
+
+/* ── Row-2 cell widths: API Key | Base URL | Refresh ── */
+#aix_cell_key     { width: 40%; }
+#aix_cell_url     { width: 44%; }
+#aix_cell_refresh { width: 16%; align: left bottom; }
+
+/* Override global Input/Select inside config panel — compact dark style */
+#aix_config Input {
+    height: 3;
+    background: #1a1a1a;
+    border: solid #550000;
+}
+#aix_config Input:focus {
+    border: double #FF0000;
+}
+#aix_config Select {
+    height: 3;
+    background: #1a1a1a;
+    border: solid #550000;
+}
+#aix_config Select:focus {
+    border: double #FF0000;
+}
+
+/* Auto-execute checkbox coloring */
+#aix_auto {
+    color: #FF0000;
+}
+
+/* Refresh button — same height as inputs, fills its cell */
+#aix_btn_refresh {
+    height: 3;
+    width: 100%;
+    margin: 0;
+}
+
+/* ── Action bar (Row 3) ── */
+#aix_actions {
+    height: 3;
+    background: #0a0000;
+    border-bottom: solid #3d0000;
+    align: left middle;
+    padding: 0 1;
+    margin-top: 1;
+}
+
+/* Equal-width action buttons */
+#aix_btn_analyse {
+    width: 1fr;
+}
+#aix_btn_report {
+    width: 1fr;
+    margin-left: 1;
+}
+
+#aix_status {
+    width: auto;
+    content-align: right middle;
+    color: #880000;
+    padding: 0 1;
+}
+
+#aix_log {
+    height: 1fr;
+    border: solid #FF0000;
+}
+
+/* ─── Terminal Tab ───────────────────────────────────── */
+
+#term_status_label {
+    width: 1fr;
+    content-align: right middle;
+    color: #880000;
+    padding: 0 1;
+}
+
+#terminal_log {
+    height: 1fr;
+    border: solid #FF0000;
+}
+
+#terminal_input_row {
+    height: 3;
+}
+
+#term_prompt_label {
+    width: 5;
+    content-align: center middle;
+    color: #FF0000;
+    text-style: bold;
+}
+
+#terminal_input {
+    width: 1fr;
+}

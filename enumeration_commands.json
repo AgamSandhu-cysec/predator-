@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "platform": "Linux",
+    "command": "find / -perm -u=s -type f 2>/dev/null",
+    "description": "Search for SUID binaries that may highlight system configuration risks.",
+    "category": "File Permissions",
+    "subcategory": "SUID Binaries",
+    "severity": "High",
+    "mitre_technique": "T1548.001",
+    "reference": "https://gtfobins.github.io",
+    "parsing_hint": "List of binary paths, one per line. Filter out common false positives.",
+    "depends_on": null
+  },
+  {
+    "id": 2,
+    "platform": "Linux",
+    "command": "sudo -l",
+    "description": "List allowed and forbidden commands for the invoking user.",
+    "category": "Sudo Misconfigurations",
+    "subcategory": "User Privileges",
+    "severity": "Critical",
+    "mitre_technique": "T1548.003",
+    "reference": "https://gtfobins.github.io",
+    "parsing_hint": "Look for NOPASSWD tags or specific bin paths.",
+    "depends_on": null
+  },
+  {
+    "id": 3,
+    "platform": "Linux",
+    "command": "uname -r",
+    "description": "Get the current kernel release version.",
+    "category": "System Information",
+    "subcategory": "Kernel",
+    "severity": "Medium",
+    "mitre_technique": "T1082",
+    "reference": null,
+    "parsing_hint": "Extract semantic versioning format digits.",
+    "depends_on": null
+  },
+  {
+    "id": 4,
+    "platform": "Windows",
+    "command": "reg query HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated",
+    "description": "Check if AlwaysInstallElevated is enabled for MSI installers.",
+    "category": "Registry Misconfiguration",
+    "subcategory": "AlwaysInstallElevated",
+    "severity": "Critical",
+    "mitre_technique": "T1548.002",
+    "reference": "https://pentestlab.blog/2017/03/30/alwaysinstallelevated/",
+    "parsing_hint": "Check if value is 0x1 (1). If key missing, assume disabled.",
+    "depends_on": null
+  },
+  {
+    "id": 5,
+    "platform": "Windows",
+    "command": "whoami /priv",
+    "description": "List privilege rights assigned to the current user's access token.",
+    "category": "Token Privileges",
+    "subcategory": "User Privileges",
+    "severity": "High",
+    "mitre_technique": "T1134",
+    "reference": "https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/user-rights-assignment",
+    "parsing_hint": "Parse rows searching for SeImpersonatePrivilege or SeDebugPrivilege.",
+    "depends_on": null
+  },
+  {
+    "id": 6,
+    "platform": "Windows",
+    "command": "wmic service get name,displayname,pathname,startmode | findstr /i \"Auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\"",
+    "description": "Identify unquoted service paths which could be manipulated.",
+    "category": "Service Misconfigurations",
+    "subcategory": "Unquoted Path",
+    "severity": "High",
+    "mitre_technique": "T1574.009",
+    "reference": "https://pentestlab.blog/2017/03/09/unquoted-service-path/",
+    "parsing_hint": "Extract unquoted paths that contain spaces outside of Windows default paths.",
+    "depends_on": null
+  }
+]

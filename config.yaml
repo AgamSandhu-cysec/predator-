@@ -1,0 +1,134 @@
+models:
+  linux: ml/models/linux_model.pkl
+  windows: ml/models/windows_model.pkl
+peas:
+  linux: /usr/share/peas/linpeas.sh
+  windows: /usr/share/peas/winpeas.bat
+exploits:
+  linux:
+    dirtycow:
+      name: DirtyCow
+      description: Kernel privilege escalation (CVE-2016-5195)
+      module: dirtycow
+      vulnerable_kernels: ["2.6", "3.", "4.4", "4.8.0", "4.8.1", "4.8.2"]
+    suid_python:
+      name: SUID Python
+      description: Python binary with SUID bit allows privilege escalation
+      module: suid_python
+    pkexec_pwnkit:
+      name: PwnKit  
+      description: Polkit pkexec privilege escalation (CVE-2021-4034)
+      module: pkexec_pwnkit
+    sudo_baron_samedit:
+      name: Baron Samedit
+      description: Sudo heap overflow (CVE-2021-3156)
+      module: sudo_baron_samedit
+      vulnerable_versions: ["1.8", "1.9.0", "1.9.1", "1.9.2", "1.9.3", "1.9.4", "1.9.5p1"]
+    suid_bash:
+      name: SUID Bash
+      description: Bash with SUID bit set
+      module: suid_bash
+  windows:
+    unquoted_path:
+      name: Unquoted Service Path
+      description: Exploit a service with an unquoted path
+      module: unquoted_path
+    hotpotato:
+      name: Hot Potato / Juicy Potato
+      description: Abuse SeImpersonatePrivilege to get SYSTEM
+      module: hotpotato
+    printspoofer:
+      name: PrintSpoofer
+      description: Print Spooler privilege escalation (SeImpersonatePrivilege)
+      module: printspoofer
+features:
+- has_sudo
+- suid_python
+- kernel_version
+- has_unquoted_path
+- always_install
+- se_impersonate
+exploit_mapping:
+  linux:
+    suid:
+      python: suid_python
+      bash: suid_bash
+      nmap: sudo_nmap
+    kernel:
+      CVE-2016-5195: dirtycow
+      CVE-2021-3156: sudo_baron_samedit
+      CVE-2021-4034: pkexec_pwnkit
+    sudo:
+      nmap: sudo_nmap
+  windows:
+    registry:
+      AlwaysInstallElevated: always_install_elevated
+    service:
+      unquoted: unquoted_path
+    token:
+      SeImpersonatePrivilege: hotpotato
+      SeImpersonate: printspoofer
+# ── Exploit Engine Settings ────────────────────────────────────────────────
+exploit:
+  auto_install_deps: false        # If true, attempt 'apt-get install <dep>' on target
+  precompiled_path: "exploits/linux/bin/"  # Local dir with pre-compiled binaries
+  listener:
+    host: "0.0.0.0"               # Bind address for reverse shell listeners
+    port_range: [4444, 4449]      # Port range to try for listeners
+
+listener:
+  lhost: '192.168.1.23'  # Set to your attacking machine IP (e.g., '10.10.14.5')
+  lport: 4444
+  timeout: 60
+execution:
+  parallel_exploits: true  # Enable parallel execution for faster exploitation
+  max_parallel: 3          # Maximum concurrent exploit attempts
+  validate_success: true   # Run full validation suite after exploitation
+  retry_failed: false      # Retry failed exploits (not recommended)
+downloader:
+  cache_dir: ~/.predator/exploits
+  auto_download: true      # Automatically download missing exploits
+  trusted_sources:
+    - github
+    - exploitdb
+exploit_sources:
+  searchsploit:
+    path: searchsploit
+    filter_local_only: true       # Only include 'local' type exploits
+    filter_privesc_only: true     # Only include privilege escalation exploits
+  metasploit:
+    rpc_host: 127.0.0.1
+    rpc_port: 55553
+    rpc_password: yourpassword
+
+ml:
+  confidence_threshold: 0.50    # Minimum confidence to show an exploit
+  use_shap: false               # Enable SHAP explainability (requires 'shap' package)
+  model_dir: ml/models/
+  retrain_on_success: false     # Auto-retrain model after successful exploitation
+
+# ── Predator Brain ─────────────────────────────────────────────────────────────
+brain:
+  enabled: true
+  model_path: "brain/models/adaptive_model.pkl"
+  scaler_path: "brain/models/scaler.pkl"
+  feedback_db: "brain/data/feedback.db"
+  graph_path:  "brain/data/exploit_graph.json"
+  min_samples_for_ml: 5          # Use rule-based fallback until N samples collected
+  retrain_every_n: 10            # Persist + retrain every N exploit attempts
+
+  llm:
+    enabled: false               # Set true if Ollama is installed and running
+    endpoint: "http://localhost:11434/api/generate"
+    model: "mistral"             # Or llama3, codellama, etc.
+    timeout: 90
+
+  crowd:
+    enabled: false               # Opt-in only — set true to share anonymised data
+    endpoint: "https://predator-intel.example.com"
+    upload_interval_days: 7
+
+  manual_recorder:
+    enabled: true
+    auto_prompt: true            # Prompt to save session after shell exit
+
